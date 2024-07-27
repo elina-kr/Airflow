@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from airflow.decorators import dag, task
 
-# Параметры по умолчанию
+# Default parameters
 default_args = {
     'owner': 'e.krasnobaeva',
     'depends_on_past': False,
@@ -75,24 +75,19 @@ def e_krasnobaeva_2():
 
         print(f'Number of games that sold better in EU than in JP for {year}:\n{count_game} games')
 
-    # Загрузка данных
+    # Load data
     link = "https://kc-course-static.hb.ru-msk.vkcs.cloud/startda/Video%20Game%20Sales.csv"
     df = get_data(link)
     
-    # Вызов задач
+    # Call tasks
     top_game_res = top_game(df)
     top_genre_res = top_genre(df)
     top_platform_res = top_na_platform(df)
     top_publisher_res = jp_publisher(df)
     count_game_res = game_eu_jp(df)
     
-    # Печать результатов
+    # Print results
     print_data(df, top_game_res, top_genre_res, top_platform_res, top_publisher_res, count_game_res)
 
-# Создание DAG-а
+# Create DAG
 e_krasnobaeva_2 = e_krasnobaeva_2()
-
-
-
-
-
