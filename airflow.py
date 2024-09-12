@@ -1,59 +1,7 @@
-Primary navigation
-Homepage
-
- Search or go to…
-Project
-A
-airflow-2.0
-
-Pinned
-Issues
-0
-Merge requests
-984
-
-Manage
-
-Plan
-
-Code
-Merge requests
-984
-Repository
-Branches
-Commits
-Tags
-Repository graph
-Compare revisions
-Snippets
-
-Build
-
-Secure
-
-Deploy
-
-Operate
-
-Monitor
-
-Analyze
-avatarDA
-airflow-2.0
-Repository
-airflow
-dags
-e-krasnobaeva
-airflow_V2.py
-Elina Krasnobaeva's avatar
-Update airflow_V2.py
-Elina Krasnobaeva authored 3 weeks ago
-c92719d1
-airflow_V2.py
-3.09 KiB
 import pandas as pd
 from datetime import datetime, timedelta
 from airflow.decorators import dag, task
+
 # Параметры по умолчанию
 default_args = {
     'owner': 'e.krasnobaeva',
@@ -62,6 +10,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
     'start_date': datetime(2024, 8, 1)
 }
+
 @dag(default_args=default_args, schedule_interval='0 12 * * *', catchup=False)
 def e_krasnobaeva_2():
     
@@ -121,7 +70,9 @@ def e_krasnobaeva_2():
         print(f'Publishers with highest average sales in JP for {year}:')
         for publisher in top_publisher_JP:
             print(publisher)
+
         print(f'Number of games that sold better in EU than in JP for {year}:\n{count_game} games')
+
     # Загрузка данных
     link = "https://kc-course-static.hb.ru-msk.vkcs.cloud/startda/Video%20Game%20Sales.csv"
     df = get_data(link)
@@ -135,5 +86,7 @@ def e_krasnobaeva_2():
     
     # Печать результатов
     print_data(df, top_game_res, top_genre_res, top_platform_res, top_publisher_res, count_game_res)
+
 # Создание DAG-а
 e_krasnobaeva_2 = e_krasnobaeva_2()
+
