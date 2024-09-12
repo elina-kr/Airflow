@@ -1,26 +1,75 @@
+Primary navigation
+Homepage
+
+ Search or go to…
+Project
+A
+airflow-2.0
+
+Pinned
+Issues
+0
+Merge requests
+984
+
+Manage
+
+Plan
+
+Code
+Merge requests
+984
+Repository
+Branches
+Commits
+Tags
+Repository graph
+Compare revisions
+Snippets
+
+Build
+
+Secure
+
+Deploy
+
+Operate
+
+Monitor
+
+Analyze
+avatarDA
+airflow-2.0
+Repository
+airflow
+dags
+e-krasnobaeva
+airflow_V2.py
+Elina Krasnobaeva's avatar
+Update airflow_V2.py
+Elina Krasnobaeva authored 3 weeks ago
+c92719d1
+airflow_V2.py
+3.09 KiB
 import pandas as pd
 from datetime import datetime, timedelta
-
 from airflow.decorators import dag, task
-
-# Default parameters
+# Параметры по умолчанию
 default_args = {
     'owner': 'e.krasnobaeva',
     'depends_on_past': False,
     'retries': 2,
     'retry_delay': timedelta(minutes=5),
-    'start_date': datetime.today(),
-    'schedule_interval': '0 12 * * *'
+    'start_date': datetime(2024, 8, 1)
 }
-
-@dag(default_args=default_args, catchup=False)
+@dag(default_args=default_args, schedule_interval='0 12 * * *', catchup=False)
 def e_krasnobaeva_2():
     
     @task(retries=3)
     def get_data(link):
         data = pd.read_csv(link)
         login = 'e-krasnobaeva'
-        year = int(1994 + hash(f'{login}') % 23)
+        year = 1994 + hash(f'{login}') % 23
         df = data.query('Year == @year')
         return df
     
@@ -72,22 +121,19 @@ def e_krasnobaeva_2():
         print(f'Publishers with highest average sales in JP for {year}:')
         for publisher in top_publisher_JP:
             print(publisher)
-
         print(f'Number of games that sold better in EU than in JP for {year}:\n{count_game} games')
-
-    # Load data
+    # Загрузка данных
     link = "https://kc-course-static.hb.ru-msk.vkcs.cloud/startda/Video%20Game%20Sales.csv"
     df = get_data(link)
     
-    # Call tasks
+    # Вызов задач
     top_game_res = top_game(df)
     top_genre_res = top_genre(df)
     top_platform_res = top_na_platform(df)
     top_publisher_res = jp_publisher(df)
     count_game_res = game_eu_jp(df)
     
-    # Print results
+    # Печать результатов
     print_data(df, top_game_res, top_genre_res, top_platform_res, top_publisher_res, count_game_res)
-
-# Create DAG
+# Создание DAG-а
 e_krasnobaeva_2 = e_krasnobaeva_2()
